@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">IPizzaApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="preview_fragment">Preview Fragment</string>
+    <string name="back_to_menu">Back to Menu</string>
+    <string name="we_will_call_u">We will call you soon to confirm order details</string>
+    <string name="order_was_successfully_sent">Order was successfully sent!</string>
+    <string name="details_dialog_fragment">Dialog Details Fragment</string>
+    <string name="cart_title">Cart</string>
+    <string name="go_to_ordered_pizza_fragment">Go to ordered pizza Fragment</string>
+    <string name="go_to_cart_fragment">Go to Cart Fragment</string>
+    <string name="place_order">Place order</string>
+    <string name="add_to_cart">Add to cart</string>
+</resources>
