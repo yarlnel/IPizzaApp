@@ -10,21 +10,17 @@ import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.home.HomeFragment
 
 
-class RootFragment : Fragment() {
+class RootFragment : Fragment(R.layout.fragment_root) {
+    private val router by lazy {
+        (requireActivity() as MainActivity).router.from(this@RootFragment)
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val router = (requireActivity() as MainActivity).router
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         router.from(this).goTo(HomeFragment.TAG, HomeFragment.newInstance())
-
-        return inflater.inflate(R.layout.fragment_root, container, false)
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance() =
-            RootFragment()
+        @JvmStatic fun newInstance() = RootFragment()
     }
 }

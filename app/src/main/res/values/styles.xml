@@ -13,6 +13,13 @@
         <item name="fontWeight">900</item>
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="BtnText">
+        <item name="font">@font/lato_black</item>
+        <item name="fontWeight">900</item>
+        <item name="android:textSize">18sp</item>
+        <item name="textAllCaps">false</item>
+    </style>
     
     <style name="AppButton.BeigeButton">
         <item name="android:background">@drawable/app_beige_button_background</item>
@@ -20,6 +27,12 @@
 
     <style name="AppButton.WhiteButton">
         <item name="android:background">@drawable/app_white_button_background</item>
+    </style>
+
+    <style name="Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="background">@color/color_app_background</item>
     </style>
 
 
@@ -52,6 +65,8 @@
         <item name="fontFamily">@font/lato_regular</item>
         <item name="fontWeight">700</item>
     </style>
+
+    <style name="PriceText" parent="HappyText" />
 
     <style name="ItemTitle">
         <item name="android:textSize">24sp</item>

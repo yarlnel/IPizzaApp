@@ -14,4 +14,7 @@
     <string name="go_to_cart_fragment">Go to Cart Fragment</string>
     <string name="place_order">Place order</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="write_something">Write something</string>
 </resources>
