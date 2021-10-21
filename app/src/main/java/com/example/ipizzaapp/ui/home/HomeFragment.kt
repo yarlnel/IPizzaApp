@@ -70,24 +70,37 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 homeViewModel.startSearchMode()
             }
 
+            val inputMethodManager = (
+                    requireActivity()
+                        .getSystemService(Activity.INPUT_METHOD_SERVICE)
+                            as? InputMethodManager
+            )
+            // Да костыль, можно было-бы сделать и через toolbar
+            // А не через замену видимости элементов
+            // Но решение через Toolbar трудно кастомизировать
+            // С использованием SearchView аналогичные проблеммы
+
             homeViewModel.appBarConfig.observe(viewLifecycleOwner, Observer { toolbarConfig ->
                 when (toolbarConfig) {
                     HomeAppBarConfig.BASE_MODE -> {
-                        menuItem.visibility = View.VISIBLE
-                        searchView.visibility = View.INVISIBLE
-                        (requireActivity()
-                            .getSystemService(Activity.INPUT_METHOD_SERVICE)
-                            as? InputMethodManager
-                        )?.hideSoftInputFromWindow(
+                        menuContainer.visibility = View.VISIBLE
+                        searchContainer.visibility = View.INVISIBLE
+                        searchView.isEnabled = false
+                        inputMethodManager?.hideSoftInputFromWindow(
                                 requireActivity().currentFocus?.windowToken,
-                                0
-                            )
+                                InputMethodManager.HIDE_IMPLICIT_ONLY,
+                        )
 
                     }
                     HomeAppBarConfig.SEARCH_MODE -> {
-                        menuItem.visibility = View.INVISIBLE
-                        searchView.visibility = View.VISIBLE
+                        menuContainer.visibility = View.INVISIBLE
+                        searchContainer.visibility = View.VISIBLE
+                        searchView.isEnabled = true
                         searchView.requestFocus()
+                        inputMethodManager?.showSoftInput(
+                            searchView,
+                            InputMethodManager.SHOW_IMPLICIT,
+                        )
                     }
                 }
             })

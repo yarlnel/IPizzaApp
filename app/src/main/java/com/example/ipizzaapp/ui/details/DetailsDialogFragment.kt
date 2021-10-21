@@ -61,8 +61,8 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "Details Dialog Fragment TAG"
         @JvmStatic fun newInstance(pizza: Pizza)
-        = DetailsDialogFragment().apply {
-            selectedPizza = pizza
-        }
+            = DetailsDialogFragment().apply {
+                selectedPizza = pizza
+            }
     }
 }
