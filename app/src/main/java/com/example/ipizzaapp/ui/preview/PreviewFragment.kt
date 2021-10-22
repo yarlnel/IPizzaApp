@@ -31,7 +31,7 @@ class PreviewFragment : Fragment(R.layout.fragment_preview) {
         }
     }
 
-    companion object {
+    companion object {  
         const val TAG = "PreviewFragmentTag"
         @JvmStatic fun newInstance() = PreviewFragment()
     }

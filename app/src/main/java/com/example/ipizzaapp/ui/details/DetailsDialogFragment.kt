@@ -1,19 +1,24 @@
 package com.example.ipizzaapp.ui.details
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-
 import com.example.ipizzaapp.databinding.FragmentDetailsDialogBinding
-import com.example.ipizzaapp.image_utils.ImageRoundedCornersTransformation
+
+
+import com.example.ipizzaapp.utils.image_utils.ImageRoundedCornersTransformation
 import com.example.ipizzaapp.similar_db.Pizza
 
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.cart.CartFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 
@@ -32,6 +37,23 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View
             = binding.root
+
+    // Адаптируем наш BottomSheetDialog под размеры WRAP_CONTENT
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
+            setOnShowListener { dialogInterface ->
+                val bottomSheetDialog = dialogInterface as BottomSheetDialog
+                val bottomSheet = bottomSheetDialog
+                    .findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+                bottomSheet ?. let {
+                    BottomSheetBehavior.from(it).apply {
+                        state = BottomSheetBehavior.STATE_EXPANDED
+                        skipCollapsed = true
+                        isHideable = true
+                    }
+                }
+            }
+        }
 
 
     @SuppressLint("SetTextI18n")

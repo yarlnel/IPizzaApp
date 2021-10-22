@@ -2,11 +2,9 @@ package com.example.ipizzaapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import com.example.ipizzaapp.R
+import com.example.ipizzaapp.abstractions.BackPressedStrategyOwner
 import com.example.ipizzaapp.fragment_lib.Router
-import com.example.ipizzaapp.ui.cart.CartFragment
-import com.example.ipizzaapp.ui.home.HomeFragment
 import com.example.ipizzaapp.ui.root.RootFragment
 
 class MainActivity : AppCompatActivity() {
@@ -21,12 +19,12 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun parentBackPressedFunction() = super.onBackPressed()
 
     override fun onBackPressed() {
-        if (supportFragmentManager.fragments.last().tag == HomeFragment.TAG) {
-            supportFragmentManager.popBackStack()
-            supportFragmentManager.popBackStack()
-            super.onBackPressed()
+        val lastFragment = supportFragmentManager.fragments.last()
+        if (lastFragment is BackPressedStrategyOwner) {
+            lastFragment.customBackPressedHandlerFunction()
         } else {
             supportFragmentManager.popBackStack()
         }
