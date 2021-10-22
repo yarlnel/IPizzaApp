@@ -31,6 +31,7 @@ class HomeViewModel(private val pizzaDao: PizzaDao) : ViewModel() {
 
     fun stopSearchMode() {
         _appBarConfig.value = HomeAppBarConfig.BASE_MODE
+        _pizzaList.value = pizzaDao.getAll()
     }
 }
 

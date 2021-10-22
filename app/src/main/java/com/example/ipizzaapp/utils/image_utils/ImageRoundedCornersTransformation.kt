@@ -1,4 +1,4 @@
-package com.example.ipizzaapp.image_utils
+package com.example.ipizzaapp.utils.image_utils
 
 import android.graphics.*
 import com.squareup.picasso.Transformation
