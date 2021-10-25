@@ -1,6 +1,3 @@
-# IPizzaApp 
-
-__Api__ приложения:
 # i-Pizza API
 
 This api will help you to send and receive data from our REST API.
