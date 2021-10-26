@@ -109,3 +109,4 @@ This api will help you to send and receive data from our REST API.
 **Exceptions**: 
 `BAD_REQUEST - 400` If the list is empty or the body doesn't match the required format
 `NOT_FOUND - 404` If the method doesn't match the required one `(POST)`
+
