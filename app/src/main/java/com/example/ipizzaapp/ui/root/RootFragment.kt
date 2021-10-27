@@ -21,6 +21,7 @@ class RootFragment : Fragment(R.layout.fragment_root) {
     }
 
     companion object {
+        const val TAG = "RootFragmentTag"
         @JvmStatic fun newInstance() = RootFragment()
     }
 }

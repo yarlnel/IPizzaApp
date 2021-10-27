@@ -12,6 +12,7 @@ class CustomSoftKeyboardManager
         activity.getSystemService(Activity.INPUT_METHOD_SERVICE)
                 as? InputMethodManager
 
+
     fun hideKeyboard() {
         inputMethodManager?.hideSoftInputFromWindow(
             activity.currentFocus?.windowToken,
