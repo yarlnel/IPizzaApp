@@ -11,11 +11,13 @@ class MainActivity : AppCompatActivity() {
     val router = Router(R.id.root, this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_IPizzaApp)
         setContentView(R.layout.activity_main)
+
 
         supportFragmentManager.beginTransaction()
             .add(R.id.root, RootFragment.newInstance())
-            .addToBackStack("root")
+            .addToBackStack(null)
             .commit()
     }
 

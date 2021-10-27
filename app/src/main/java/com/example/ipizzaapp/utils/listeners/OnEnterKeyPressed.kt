@@ -8,16 +8,12 @@ import android.widget.TextView
 class OnEnterKeyPressed
     (private val callbackLambda: (text: String) -> Unit)
     : TextView.OnEditorActionListener {
-        override fun onEditorAction
-                    (v: TextView?,
-                     actionId: Int,
-                     event: KeyEvent?): Boolean
-            = when (actionId) {
-                    EditorInfo.IME_ACTION_SEARCH -> {
-                        callbackLambda(v?.text.toString())
-                        true
-                    }
-                    else -> false
-                }
-
+        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?)
+            : Boolean = when (actionId) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+                            callbackLambda(v?.text.toString())
+                            true
+                        }
+                        else -> false
+            }
 }

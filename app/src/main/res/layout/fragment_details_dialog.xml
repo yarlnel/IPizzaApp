@@ -26,9 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/detailsImageView"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginStart="25dp"
@@ -37,8 +35,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/detailsImageContainer"
+                app:cardCornerRadius="16dp"
+                >
+                <ImageView
+                    android:id="@+id/detailsImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
-                tools:src="@drawable/margarita_img" />
+                    tools:src="@drawable/margarita_img" />
+
+            </androidx.cardview.widget.CardView>
 
 
             <TextView
@@ -50,7 +57,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsImageView"
+                app:layout_constraintTop_toBottomOf="@+id/detailsImageContainer"
                 tools:text="Margarita" />
 
 

@@ -10,18 +10,18 @@ import android.widget.FrameLayout
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.ipizzaapp.databinding.FragmentDetailsDialogBinding
-
-
-import com.example.ipizzaapp.utils.image_utils.ImageRoundedCornersTransformation
-import com.example.ipizzaapp.similar_db.Pizza
+import com.example.ipizzaapp.pojo.Pizza
 
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.cart.CartFragment
+import com.example.ipizzaapp.ui.preview.PreviewFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 
+
+private const val SELECTED_PIZZA_PARAM = "selected pizza parameter"
 
 class DetailsDialogFragment : BottomSheetDialogFragment() {
     private val binding: FragmentDetailsDialogBinding
@@ -32,6 +32,13 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
     }
 
     var selectedPizza : Pizza? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+           selectedPizza = it.getParcelable(SELECTED_PIZZA_PARAM)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,9 +70,8 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
         with(binding) {
             selectedPizza ?. let { pizza ->
                 Picasso.get()
-                    .load(pizza.imageUrl)
+                    .load(pizza.imageUrls.first())
                     .fit()
-                    .transform(ImageRoundedCornersTransformation(radius = 16))
                     .into(detailsImageView)
 
                 titleTextView.text = pizza.name
@@ -73,6 +79,14 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
                 priceTextView.text = "${pizza.price}₽"
 
             }
+
+            detailsImageView.setOnClickListener {
+                this@DetailsDialogFragment.dismiss()
+                selectedPizza ?. let { pizza ->
+                    router.goTo(PreviewFragment.TAG, PreviewFragment.newInstance(pizza = pizza))
+                }
+            }
+
             goToCartFragment.setOnClickListener {
                 this@DetailsDialogFragment.dismiss()
                 router.goTo(CartFragment.TAG, CartFragment.newInstance())
@@ -84,7 +98,9 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
         const val TAG = "Details Dialog Fragment TAG"
         @JvmStatic fun newInstance(pizza: Pizza)
             = DetailsDialogFragment().apply {
-                selectedPizza = pizza
+                arguments = Bundle().apply {
+                    putParcelable(SELECTED_PIZZA_PARAM, pizza)
+                }
             }
     }
 }

@@ -54,6 +54,7 @@ class Router(
             .addToBackStack(null)
             .commit()
 
+
         currentFragment = fragment
 
         return this
@@ -61,14 +62,12 @@ class Router(
 
 
     fun back(): Router {
-        if (fragmentManager.fragments.map{ it.tag }.last() == HomeFragment.TAG)
-            appActivity.onBackPressed()
         fragmentManager.popBackStack()
         return this
     }
 
     fun backTo(screenKey: String): Router {
-        val frag  =  fragmentManager.findFragmentByTag(screenKey) ?: throw Exception("""
+        fragmentManager.findFragmentByTag(screenKey) ?: throw Exception("""
             Fragment with tag: $screenKey not find !!!
         """.trimIndent())
 

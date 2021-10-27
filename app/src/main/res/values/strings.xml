@@ -16,5 +16,9 @@
     <string name="add_to_cart">Add to cart</string>
     <string name="search">Search</string>
     <string name="menu">Menu</string>
+    <string name="page_number_to_page_count">%1$d/%2$d</string>
     <string name="write_something">Write something</string>
+    <string name="price_in_currency">%1$d₽</string>
+    <string name="abbreviated_text_placeholder">%1$s...</string>
+
 </resources>
