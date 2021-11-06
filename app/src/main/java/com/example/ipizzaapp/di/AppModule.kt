@@ -1,16 +1,17 @@
 package com.example.ipizzaapp.di
 
-import com.example.ipizzaapp.similar_db.PizzaDatabase
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dagger.android.support.AndroidSupportInjectionModule
+
 
 @Module(includes = [
     PicassoModule::class,
     AppContextModule::class,
     RetrofitModule::class,
     PicassoModule::class,
+    ViewModelModule::class,
+    FragmentModule::class,
+    DatabaseModule::class,
+    AndroidSupportInjectionModule::class,
 ])
-class AppModule {
-
-}
+class AppModule

@@ -1,4 +1,4 @@
-package com.example.ipizzaapp.utils.listeners
+package com.example.ipizzaapp.utils.handlers
 
 import androidx.viewpager2.widget.ViewPager2
 

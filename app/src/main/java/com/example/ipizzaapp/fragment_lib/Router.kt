@@ -4,22 +4,37 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.ipizzaapp.R
+import com.example.ipizzaapp.models.Pizza
+import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.home.HomeFragment
+import com.google.gson.Gson
 import java.lang.Exception
+import java.util.*
+import javax.inject.Inject
 
 
-class Router(
-    private val rootFragmentContainerId: Int,
-    private val appActivity: AppCompatActivity,
-    private val configLambda: Router.() -> Unit = {},
-) {
-    private val isLoggingEnable = true
+object Router {
+    private var _appActivity: MainActivity? = null
+    fun setAppActivity(mainActivity: MainActivity) {
+        _appActivity = mainActivity
+    }
 
-    private fun log (s: String) {
+    private val tags = mutableListOf<String>()
+
+    private val appActivity: MainActivity
+        get() = _appActivity!!
+    private const val isLoggingEnable = true
+    private const val rootFragmentContainerId: Int = R.id.root
+
+
+    private fun log(s: String) {
         Log.e(Router::class.java.simpleName, s)
     }
 
-    private val fragmentManager = appActivity.supportFragmentManager
+    private val fragmentManager by lazy {
+        appActivity.supportFragmentManager
+    }
 
     private var currentFragment: Fragment? = null
 
@@ -47,11 +62,12 @@ class Router(
                 |Use from() become using goTo() 
                 """.trimMargin("|")
         )
-
+        tags += screenKey
         fragmentManager
             .beginTransaction()
-            .add(rootFragmentContainerId, fragment, screenKey)
-            .addToBackStack(null)
+            .setReorderingAllowed(true)
+            .replace(rootFragmentContainerId, fragment, screenKey)
+            .addToBackStack(screenKey)
             .commit()
 
 
@@ -63,23 +79,33 @@ class Router(
 
     fun back(): Router {
         fragmentManager.popBackStack()
+        tags.removeLast()
         return this
     }
 
     fun backTo(screenKey: String): Router {
-        fragmentManager.findFragmentByTag(screenKey) ?: throw Exception("""
-            Fragment with tag: $screenKey not find !!!
-        """.trimIndent())
+        if (!tags.contains(screenKey))
+            throw Exception("""
+                Router cant backTo $screenKey
+                Because Fragment with this screenKey 
+                Not contains in Router local backstack
+                Use goTo with this ($screenKey) screenKey
+                Become using backTo ($screenKey)
+            """.trimIndent())
 
-        val elemIndex = fragmentManager.fragments.map { it.tag }.indexOf(screenKey)
-        val fragmentsCount = fragmentManager.fragments.count()
-        for (i in 2 .. (fragmentsCount - elemIndex)) fragmentManager.popBackStack()
-
+        repeat((tags.size - 1) - tags.indexOf(screenKey)) {
+            tags.removeLast()
+            fragmentManager.popBackStack()
+        }
         return this
     }
 
     fun replace(screenKey: String, fragment: Fragment): Router {
-        fragmentManager.beginTransaction().replace(rootFragmentContainerId, fragment, screenKey)
+        tags[tags.size - 1] = screenKey
+        fragmentManager
+            .beginTransaction()
+            .replace(rootFragmentContainerId, fragment, screenKey)
+            .commit()
         currentFragment = fragment
         return this
     }

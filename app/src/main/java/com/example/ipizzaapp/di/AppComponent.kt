@@ -1,16 +1,23 @@
 package com.example.ipizzaapp.di
 
-import com.example.ipizzaapp.network.IPizzaService
-import com.example.ipizzaapp.ui.home.HomeFragment
-import com.example.ipizzaapp.ui.home.HomeViewModel
-import com.example.ipizzaapp.ui.preview.PreviewFragment
+import com.example.ipizzaapp.MainApp
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AppModule::class])
-interface AppComponent {
-    fun inject(homeFragment: HomeFragment)
-    fun inject(previewFragment: PreviewFragment)
-    fun iPizzaApi() : IPizzaService
+interface AppComponent : AndroidInjector<MainApp>{
+
+    @Component.Builder
+    interface Builder {
+        fun appContextModule (appContextModule: AppContextModule) : Builder
+
+        @BindsInstance
+        fun bindContext(mainApp: MainApp) : Builder
+
+        fun build() : AppComponent
+    }
+
 }

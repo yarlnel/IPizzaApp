@@ -7,36 +7,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+
 import com.example.ipizzaapp.databinding.FragmentDetailsDialogBinding
-import com.example.ipizzaapp.pojo.Pizza
+import com.example.ipizzaapp.fragment_lib.Router
 
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.cart.CartFragment
 import com.example.ipizzaapp.ui.preview.PreviewFragment
+import com.example.ipizzaapp.utils.image_utils.ImageBitmapLoader
+import com.example.ipizzaapp.utils.image_utils.setFitImage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
+import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 
-private const val SELECTED_PIZZA_PARAM = "selected pizza parameter"
+private const val SELECTED_PIZZA_ID = "selected pizza id parameter"
 
-class DetailsDialogFragment : BottomSheetDialogFragment() {
+class DetailsDialogFragment
+    : BottomSheetDialogFragment() {
     private val binding: FragmentDetailsDialogBinding
         by viewBinding(CreateMethod.INFLATE)
 
-    private val router by lazy {
-        (requireActivity() as MainActivity).router
+
+    private var selectedPizzaId: Int = 0
+
+    @Inject lateinit var modelFactory: ViewModelProvider.Factory
+    private val detailsViewModel: DetailsViewModel by viewModels {
+        modelFactory
     }
 
-    var selectedPizza : Pizza? = null
+    @Inject lateinit var imageBitmapLoader: ImageBitmapLoader
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidSupportInjection.inject(this)
         arguments?.let {
-           selectedPizza = it.getParcelable(SELECTED_PIZZA_PARAM)
+           selectedPizzaId = it.getInt(SELECTED_PIZZA_ID)
         }
     }
 
@@ -66,40 +84,45 @@ class DetailsDialogFragment : BottomSheetDialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        detailsViewModel.setupPizzaById(selectedPizzaId)
         with(binding) {
-            selectedPizza ?. let { pizza ->
-                Picasso.get()
-                    .load(pizza.imageUrls.first())
-                    .fit()
-                    .into(detailsImageView)
+            detailsViewModel.selectedPizza.subscribe { pizza ->
+
+                val imageUrl = pizza.imageUrls.first()
+                imageBitmapLoader.loadImageBitmap(imageUrl, detailsImageView::setFitImage)
 
                 titleTextView.text = pizza.name
                 descriptionTextView.text = pizza.description
                 priceTextView.text = "${pizza.price}₽"
-
-            }
+            }.let(compositeDisposable::add)
 
             detailsImageView.setOnClickListener {
                 this@DetailsDialogFragment.dismiss()
-                selectedPizza ?. let { pizza ->
-                    router.goTo(PreviewFragment.TAG, PreviewFragment.newInstance(pizza = pizza))
+                detailsViewModel.getSelectedPizzaOrNull()?.let { pizza ->
+                    Router.goTo(PreviewFragment.TAG,
+                        PreviewFragment.newInstance(pizzaId = pizza.id))
                 }
             }
 
             goToCartFragment.setOnClickListener {
+                detailsViewModel.addSelectedPizzaToCart()
                 this@DetailsDialogFragment.dismiss()
-                router.goTo(CartFragment.TAG, CartFragment.newInstance())
+                Router.goTo(CartFragment.TAG, CartFragment.newInstance())
             }
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
+    }
+
     companion object {
         const val TAG = "Details Dialog Fragment TAG"
-        @JvmStatic fun newInstance(pizza: Pizza)
+        @JvmStatic fun newInstance(pizzaId: Int)
             = DetailsDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(SELECTED_PIZZA_PARAM, pizza)
+                    putInt(SELECTED_PIZZA_ID, pizzaId)
                 }
             }
     }

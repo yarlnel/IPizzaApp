@@ -5,14 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipizzaapp.databinding.ImageItemBinding
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class ImageViewPagerAdapter : RecyclerView.Adapter<ImageViewPagerAdapter.ViewHolder>() {
+class ImageViewPagerAdapter
+    @Inject constructor(private val picasso: Picasso)
+    : RecyclerView.Adapter<ImageViewPagerAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemBinding: ImageItemBinding)
         : RecyclerView.ViewHolder(itemBinding.root) {
             fun bind (imageUrl: String) {
                 with(itemBinding) {
-                    Picasso.get()
+                    picasso
                         .load(imageUrl)
                         .into(itemImageView)
                 }

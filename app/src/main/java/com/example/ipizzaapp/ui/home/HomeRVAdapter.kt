@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ipizzaapp.R
 
 import com.example.ipizzaapp.databinding.PizzaItemBinding
-import com.example.ipizzaapp.pojo.Pizza
+import com.example.ipizzaapp.models.Pizza
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -37,15 +37,22 @@ class HomeRecyclerViewAdapter
                         R.string.price_in_currency, pizza.price
                     )
 
-                    _onItemBindCallback(this to pizza)
+                    root.setOnClickListener {
+                        onRootElementClick(pizza)
+                    }
+
+                    itemImageView.setOnClickListener {
+                        onImageItemClick(pizza)
+                    }
                 }
             }
         }
 
-    private var _onItemBindCallback: (Pair<PizzaItemBinding, Pizza>) -> Unit = {}
-    fun onItemBind(callbackLambda: (Pair<PizzaItemBinding, Pizza>) -> Unit) {
-        _onItemBindCallback = callbackLambda
-    }
+    var onRootElementClick: (pizza: Pizza) -> Unit = {}
+    var onImageItemClick: (pizza: Pizza) -> Unit = {}
+
+
+
 
     private var pizzas = emptyList<Pizza>()
 

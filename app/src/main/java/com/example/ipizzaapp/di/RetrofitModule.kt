@@ -1,6 +1,6 @@
 package com.example.ipizzaapp.di
 
-import com.example.ipizzaapp.network.IPizzaService
+import com.example.ipizzaapp.network.retrofit.IPizzaApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.CallAdapter
@@ -34,8 +34,8 @@ class RetrofitModule {
     @Provides @Singleton
     fun provideIPizzaService (
         @IPizzaApiRetrofit retrofit: Retrofit
-    ) : IPizzaService
-        = retrofit.create(IPizzaService::class.java)
+    ) : IPizzaApi
+        = retrofit.create(IPizzaApi::class.java)
 
 }
 
