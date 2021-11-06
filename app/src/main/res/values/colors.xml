@@ -17,4 +17,5 @@
     <color name="color_app_background">#F6F6F6</color>
     <color name="app_text_color">#424242</color>
     <color name="color_app_search">#EEEEEE</color>
+    <color name="plus_minus_color">#1AC4C4C4</color>
 </resources>

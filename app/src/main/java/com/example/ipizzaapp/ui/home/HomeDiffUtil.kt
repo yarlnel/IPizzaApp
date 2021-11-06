@@ -1,7 +1,7 @@
 package com.example.ipizzaapp.ui.home
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.ipizzaapp.pojo.Pizza
+import com.example.ipizzaapp.models.Pizza
 
 class HomeDiffUtil(
     private val oldList: List<Pizza>,

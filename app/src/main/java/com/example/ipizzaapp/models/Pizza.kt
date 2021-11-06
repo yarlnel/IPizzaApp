@@ -1,6 +1,8 @@
-package com.example.ipizzaapp.pojo
+package com.example.ipizzaapp.models
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -11,9 +13,8 @@ data class Response(
 	val response: List<ResponseItem?>? = null
 )*/
 
-@Parcelize
+@Entity(tableName = "pizza_table")
 data class Pizza(
-
 	@field:SerializedName("price")
 	val price: Int,
 
@@ -27,5 +28,6 @@ data class Pizza(
 	val description: String,
 
 	@field:SerializedName("id")
+	@PrimaryKey(autoGenerate = false)
 	val id: Int,
-) : Parcelable
+)

@@ -13,23 +13,29 @@
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/button_background.xml" value="0.20833333333333334" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20185185185185187" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_pizza_logo_svg.xml" value="0.2635416666666667" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_plus.xml" value="0.2635416666666667" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_plus_svg.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_sarch_black_vector.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_search_black.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/ic_search_black_vector.xml" value="0.13697916666666668" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/pizza_app_logo.xml" value="0.20185185185185187" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/pizza_logo_svg.xml" value="0.2635416666666667" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/plus_minus_background.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/rounded_top_angle_white.xml" value="0.21574074074074073" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/drawable/search_background.xml" value="0.2635416666666667" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/font/lato_black.xml" value="0.21574074074074073" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/activity_main.xml" value="0.24322916666666666" />
-        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/cart_item.xml" value="0.13496376811594202" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/cart_item.xml" value="0.4" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_cart.xml" value="0.2" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_details_dialog.xml" value="0.4" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_home.xml" value="0.5081610446137106" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_ordered_pizza.xml" value="0.264" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_place_order.xml" value="0.13632246376811594" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_preview.xml" value="0.264" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/fragment_root.xml" value="0.4" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/image_item.xml" value="0.13496376811594202" />
-        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/pizza_item.xml" value="0.536" />
+        <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/layout/pizza_item.xml" value="0.4585635359116022" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/menu/home_menu.xml" value="0.24322916666666666" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/menu/menu.xml" value="0.24322916666666666" />
         <entry key="..\:/gggg/AndroidProjects/IPizzaApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2635416666666667" />

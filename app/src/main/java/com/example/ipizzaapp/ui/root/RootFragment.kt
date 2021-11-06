@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ipizzaapp.R
+import com.example.ipizzaapp.fragment_lib.Router
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.home.HomeFragment
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 
-class RootFragment : Fragment(R.layout.fragment_root) {
-    private val router by lazy {
-        (requireActivity() as MainActivity).router.from(this@RootFragment)
-    }
+class RootFragment : DaggerFragment(R.layout.fragment_root) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        router.from(this).goTo(HomeFragment.TAG, HomeFragment.newInstance())
+        Router.from(this).goTo(HomeFragment.TAG, HomeFragment.newInstance())
     }
 
     companion object {

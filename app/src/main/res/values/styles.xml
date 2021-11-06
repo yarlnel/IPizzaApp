@@ -21,6 +21,7 @@
     <style name="BtnText">
         <item name="font">@font/lato_black</item>
         <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textColor">@color/app_text_color</item>
         <item name="fontWeight">900</item>
         <item name="android:textSize">18sp</item>
         <item name="textAllCaps">false</item>
@@ -64,6 +65,18 @@
         <item name="colorPrimaryVariant">@color/color_app_beige</item>
     </style>
 
+    <style name="PlusMinusButton">
+        <item name="android:background">@drawable/plus_minus_background</item>
+        <item name="android:width">32dp</item>
+        <item name="android:height">32dp</item>
+    </style>
+
+    <style name="AmountText">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="HappyText">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/app_text_color</item>
@@ -81,10 +94,9 @@
     </style>
 
     <style name="Title">
-        <item name="fontWeight">600</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/app_text_color</item>
-        <item name="font">@font/lato_regular</item>
+        <item name="font">@font/lato_bold</item>
     </style>
 
     <style name="BottomContainer">

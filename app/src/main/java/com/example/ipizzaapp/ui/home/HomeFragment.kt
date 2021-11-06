@@ -1,79 +1,72 @@
 package com.example.ipizzaapp.ui.home
 
 import android.os.Bundle
-import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.ipizzaapp.R
 import com.example.ipizzaapp.abstractions.BackPressedStrategyOwner
-import com.example.ipizzaapp.appComponent
+
 import com.example.ipizzaapp.databinding.FragmentHomeBinding
-import com.example.ipizzaapp.pojo.Pizza
+import com.example.ipizzaapp.fragment_lib.Router
+import com.example.ipizzaapp.models.Pizza
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.details.DetailsDialogFragment
 import com.example.ipizzaapp.ui.preview.PreviewFragment
-import com.example.ipizzaapp.utils.custom_managers.CustomSoftKeyboardManager
-import com.example.ipizzaapp.utils.listeners.OnEnterKeyPressed
+import com.example.ipizzaapp.utils.custom_managers.keyboard.CustomKeyboardManagerFactory
+import com.example.ipizzaapp.utils.handlers.OnEnterKeyPressed
+import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 
-class HomeFragment : Fragment(R.layout.fragment_home), BackPressedStrategyOwner {
+class HomeFragment : DaggerFragment(R.layout.fragment_home), BackPressedStrategyOwner {
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
-    private val router by lazy {
-        (requireActivity() as MainActivity)
-            .router.from(this@HomeFragment)
-    }
 
+    @Inject lateinit var modelFactory: ViewModelProvider.Factory
     private val homeViewModel : HomeViewModel by viewModels {
-        HomeViewModelFactory(appComponent.iPizzaApi())
+        modelFactory
     }
 
     @Inject lateinit var homeRecyclerViewAdapter: HomeRecyclerViewAdapter
 
-    // Если использовать екстеншены вместо класса CustomSoftKeyboardManager
-    // То нам прейдется чаще вызывать метод
-    // activity.getSystemService(Activity.INPUT_METHOD_SERVICE)
-    // для получения InputManager, что не очень хорошо
-    //
-    // поэтому я решил оставить класс CustomSoftKeyboardManager
+
+
+    @Inject lateinit var customKeyboardManagerFactory: CustomKeyboardManagerFactory
     private val keyboardManager by lazy {
-        CustomSoftKeyboardManager(requireActivity() as AppCompatActivity)
+        customKeyboardManagerFactory
+            .create(requireActivity() as AppCompatActivity)
     }
+
 
     private val compositeDisposable = CompositeDisposable()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
-        super.onCreate(savedInstanceState)
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homeViewModel.setupPizza()
 
-        homeRecyclerViewAdapter.onItemBind { (binding, pizza) ->
-            with(binding) {
-                root.setOnClickListener {
-                    showDetailsDialog(pizza = pizza)
-                    homeViewModel.stopSearchMode()
-                }
-                itemImageView.setOnClickListener {
-                    router.goTo(
-                        PreviewFragment.TAG,
-                        PreviewFragment.newInstance(pizza = pizza))
-                    homeViewModel.stopSearchMode()
-                }
-            }
+        keyboardManager
+
+        homeRecyclerViewAdapter.onImageItemClick = { pizza ->
+            Router.goTo(
+                PreviewFragment.TAG,
+                PreviewFragment.newInstance(pizzaId = pizza.id))
+            keyboardManager.hideKeyboard()
         }
 
+        homeRecyclerViewAdapter.onRootElementClick = { pizza ->
+            showDetailsDialog(pizza = pizza)
+            keyboardManager.hideKeyboard()
+        }
+
+
         with(binding) {
-
-
             homeRecyclerView.adapter = homeRecyclerViewAdapter
 
             searchView.addTextChangedListener { text ->
@@ -111,10 +104,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), BackPressedStrategyOwner 
 
         }
 
-        homeViewModel.selectedPizzas.subscribe{ pizzas ->
+        homeViewModel.selectedPizzas.subscribe { pizzas ->
             homeRecyclerViewAdapter.setPizzaList(pizzas)
         }.let(compositeDisposable::add)
     }
+
+
 
     override fun onStop() {
         homeViewModel.setSearchText(binding.searchView.text.toString())
@@ -123,7 +118,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), BackPressedStrategyOwner 
 
     private fun showDetailsDialog(pizza: Pizza) {
         DetailsDialogFragment
-            .newInstance(pizza = pizza)
+            .newInstance(pizzaId = pizza.id)
             .show(
                 requireActivity().supportFragmentManager,
                 DetailsDialogFragment.TAG)

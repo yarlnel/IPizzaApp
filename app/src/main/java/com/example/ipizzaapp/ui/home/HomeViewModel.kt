@@ -1,26 +1,22 @@
 package com.example.ipizzaapp.ui.home
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.ipizzaapp.network.IPizzaService
-import com.example.ipizzaapp.pojo.Pizza
-import com.example.ipizzaapp.similar_db.PizzaDatabase
-import com.example.ipizzaapp.similar_db.getTestPizzas
-import com.example.ipizzaapp.similar_db.oldPizzaToNew
-import com.google.android.material.appbar.AppBarLayout
+import com.example.ipizzaapp.db.dao.PizzaDao
+import com.example.ipizzaapp.network.retrofit.IPizzaApi
+import com.example.ipizzaapp.models.Pizza
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import org.w3c.dom.ls.LSException
+import javax.inject.Inject
 
 class HomeViewModel
-    constructor(private val pizzaService: IPizzaService)
-    : ViewModel() {
-
+    @Inject constructor(
+        private val pizzaApi: IPizzaApi,
+        private val pizzaDao: PizzaDao,
+    ) : ViewModel() {
 
     private fun log ( th: Throwable) {
         Log.e(HomeViewModel::class.java.simpleName, th.stackTraceToString())
@@ -42,14 +38,32 @@ class HomeViewModel
     val selectedPizzas : Observable<List<Pizza>> = _selectedPizzas
     private val baseListOfPizza = mutableListOf<Pizza>()
 
-
     init {
-        setupPizzasFromApi()
-        searchText.subscribe(this::filterPizzaByName).let(compositeDisposable::add)
+        searchText
+            .subscribe(this::filterPizzaByName)
+            .let(compositeDisposable::add)
     }
 
-    private fun setupPizzasFromApi () {
-        pizzaService.getPizzaList()
+    fun setupPizza () {
+        if (baseListOfPizza.count() == 0) {
+            setupPizzasFromDb()
+        } else {
+            setupSavedPizza()
+        }
+    }
+
+    private fun setupSavedPizza () {
+        _selectedPizzas.onNext(baseListOfPizza)
+        if (!_searchText.value.isNullOrEmpty()) {
+            filterPizzaByName(_searchText.value.toString())
+            _appBarConfig.onNext(HomeAppBarConfig.SEARCH_MODE)
+        }
+    }
+
+
+    private fun setupPizzasFromDb () {
+        pizzaDao
+            .getAllPizza()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ listOfPizza ->
@@ -90,8 +104,8 @@ class HomeViewModel
     }
 
     override fun onCleared() {
-        super.onCleared()
         compositeDisposable.clear()
+        super.onCleared()
     }
 }
 
