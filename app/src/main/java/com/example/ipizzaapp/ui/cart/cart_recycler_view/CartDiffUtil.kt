@@ -1,9 +1,7 @@
-package com.example.ipizzaapp.ui.cart
+package com.example.ipizzaapp.ui.cart.cart_recycler_view
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.ipizzaapp.models.CartItemModel
 import com.example.ipizzaapp.models.Order
-import com.example.ipizzaapp.models.Pizza
 
 class CartDiffUtil(
     private val oldList: List<Order>,

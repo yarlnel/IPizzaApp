@@ -12,7 +12,6 @@ interface AppComponent : AndroidInjector<MainApp>{
 
     @Component.Builder
     interface Builder {
-        fun appContextModule (appContextModule: AppContextModule) : Builder
 
         @BindsInstance
         fun bindContext(mainApp: MainApp) : Builder

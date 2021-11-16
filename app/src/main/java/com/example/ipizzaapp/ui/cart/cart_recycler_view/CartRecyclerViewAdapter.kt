@@ -1,19 +1,15 @@
-package com.example.ipizzaapp.ui.cart
+package com.example.ipizzaapp.ui.cart.cart_recycler_view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ipizzaapp.R
 
 import com.example.ipizzaapp.databinding.CartItemBinding
-import com.example.ipizzaapp.models.CartItemModel
 import com.example.ipizzaapp.models.Order
 import com.example.ipizzaapp.models.Pizza
 import com.example.ipizzaapp.network.castom_providers.PizzaLoader
 import com.example.ipizzaapp.utils.image_utils.ImageBitmapLoader
-import com.example.ipizzaapp.utils.image_utils.setFitImage
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -22,8 +18,10 @@ class CartRecyclerViewAdapter
         private val picasso: Picasso,
         private val pizzaLoader: PizzaLoader,
         private val imageLoader: ImageBitmapLoader,
-    ) : RecyclerView.Adapter<CartRecyclerViewAdapter.ViewHolder>() {
+        private val cartItemViewHolderFactory: CartItemViewHolderFactory
+    ) : RecyclerView.Adapter<CartItemViewHolder>() {
     private var orderList: List<Order> = listOf()
+
     private var _onItemBind: CartItemBinding.(pizza: Pizza) -> Unit = {}
     fun onItemBind(itemBindCallback: CartItemBinding.(pizza: Pizza) -> Unit) {
         _onItemBind = itemBindCallback
@@ -36,39 +34,19 @@ class CartRecyclerViewAdapter
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder
-        (private val itemBinding: CartItemBinding)
-        : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(order: Order) {
-            with(itemBinding) {
-                val itemContext = itemBinding.root.context
-                pizzaLoader.loadPizzaById(order.pizzaId ?: 1) { pizza ->
-                    val imageUrl = pizza.imageUrls.first()
-                    imageLoader.loadImageBitmap(imageUrl) { bitmap ->
-                        itemImageView.setFitImage(bitmap)
-                    }
 
-                    quantityTextView.text = order.quantity.toString()
-
-                    titleTextView.text = pizza.name
-                    priceTextView.text = itemContext
-                        .getString(R.string.price_in_currency, pizza.price)
-
-                    _onItemBind(pizza)
-                }
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartItemViewHolder {
         val binding = CartItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false)
-        return ViewHolder(binding)
+        return cartItemViewHolderFactory.create(
+            itemBinding = binding,
+            onItemBind = _onItemBind,
+        )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CartItemViewHolder, position: Int) {
         holder.bind(orderList[position])
     }
 

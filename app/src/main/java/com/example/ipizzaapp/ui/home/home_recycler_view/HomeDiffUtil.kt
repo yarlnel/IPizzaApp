@@ -1,4 +1,4 @@
-package com.example.ipizzaapp.ui.home
+package com.example.ipizzaapp.ui.home.home_recycler_view
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.ipizzaapp.models.Pizza

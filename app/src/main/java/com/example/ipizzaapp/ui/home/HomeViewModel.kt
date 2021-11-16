@@ -88,6 +88,7 @@ class HomeViewModel
     fun getAppBarConfig () = _appBarConfig.value
 
 
+
     private fun filterPizzaByName(name: String) {
         baseListOfPizza
             .filter { name.lowercase() in it.name.lowercase() }

@@ -63,6 +63,7 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorPrimary">@color/color_app_beige</item>
         <item name="colorPrimaryVariant">@color/color_app_beige</item>
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 
     <style name="PlusMinusButton">

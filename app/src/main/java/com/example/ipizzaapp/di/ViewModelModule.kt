@@ -18,16 +18,20 @@ import kotlin.reflect.KClass
 
 @Module
 interface ViewModelModule {
-    @Binds @IntoMap @ViewModelKey(HomeViewModel::class)
+    @Binds
+    @[IntoMap ViewModelKey(HomeViewModel::class)]
     fun bindHomeViewModel (homeViewModel: HomeViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(PreviewViewModel::class)
+    @Binds
+    @[IntoMap ViewModelKey(PreviewViewModel::class)]
     fun bindPreviewViewModel (previewViewModel: PreviewViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(DetailsViewModel::class)
+    @Binds
+    @[IntoMap ViewModelKey(DetailsViewModel::class)]
     fun bindDetailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
 
-    @Binds @IntoMap @ViewModelKey(CartViewModel::class)
+    @Binds
+    @[IntoMap ViewModelKey(CartViewModel::class)]
     fun bindCartViewModel(cartViewModel: CartViewModel): ViewModel
 
     @Binds
