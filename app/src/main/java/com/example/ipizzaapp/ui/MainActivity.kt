@@ -2,6 +2,7 @@ package com.example.ipizzaapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import com.example.ipizzaapp.R
 import com.example.ipizzaapp.abstractions.BackPressedStrategyOwner
 import com.example.ipizzaapp.fragment_lib.Router
@@ -17,6 +18,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_IPizzaApp)
+
 
         setupDataManager.setupAllToDb()
 

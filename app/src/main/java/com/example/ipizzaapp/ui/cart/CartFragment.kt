@@ -1,10 +1,7 @@
 package com.example.ipizzaapp.ui.cart
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,20 +9,20 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.ipizzaapp.R
 import com.example.ipizzaapp.databinding.FragmentCartBinding
 import com.example.ipizzaapp.fragment_lib.Router
-import com.example.ipizzaapp.ui.MainActivity
+import com.example.ipizzaapp.ui.cart.cart_recycler_view.CartRecyclerViewAdapter
 import com.example.ipizzaapp.ui.ordered_pizza.PlaceOrderFragment
+import dagger.Lazy
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class CartFragment : DaggerFragment(R.layout.fragment_cart) {
     private val binding by viewBinding(FragmentCartBinding::bind)
 
     @Inject lateinit var  cartRecyclerViewAdapter: CartRecyclerViewAdapter
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: Lazy<ViewModelProvider.Factory>
     private val cartViewModel : CartViewModel by viewModels {
-        viewModelFactory
+        viewModelFactory.get()
     }
 
     private val compositeDisposable = CompositeDisposable()

@@ -11,7 +11,9 @@ import com.example.ipizzaapp.constants.BundleKeys
 import com.example.ipizzaapp.databinding.FragmentPreviewBinding
 import com.example.ipizzaapp.fragment_lib.Router
 import com.example.ipizzaapp.ui.cart.CartFragment
+import com.example.ipizzaapp.ui.preview.preview_view_pager.ImageViewPagerAdapter
 import com.example.ipizzaapp.utils.handlers.OnPageSelected
+import dagger.Lazy
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -24,9 +26,9 @@ class PreviewFragment
 
     private val binding by viewBinding(FragmentPreviewBinding::bind)
 
-    @Inject lateinit var modelFactory: ViewModelProvider.Factory
+    @Inject lateinit var modelFactory: Lazy<ViewModelProvider.Factory>
     private val previewViewModel : PreviewViewModel by viewModels {
-        modelFactory
+        modelFactory.get()
     }
 
     private val compositeDisposable = CompositeDisposable()

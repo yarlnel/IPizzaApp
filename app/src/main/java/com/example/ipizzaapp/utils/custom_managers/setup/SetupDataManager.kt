@@ -1,6 +1,7 @@
 package com.example.ipizzaapp.utils.custom_managers.setup
 
 import android.graphics.BitmapFactory
+import android.os.AsyncTask.execute
 import android.util.Log
 import com.example.ipizzaapp.abstractions.BaseRxAndLoggingClass
 import com.example.ipizzaapp.db.dao.ImageDao
@@ -11,6 +12,8 @@ import com.example.ipizzaapp.network.retrofit.IPizzaApi
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.net.URL
+import java.util.concurrent.Executor
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -26,14 +29,18 @@ class SetupDataManager
     ): BaseRxAndLoggingClass() {
 
     fun setupAllToDb () {
+        /*
         pizzaApi
             .getPizzaList()
-            .subscribeOn(Schedulers.io())
+            .delay(10, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.computation())
             .observeOn(Schedulers.computation())
             .subscribe({ listOfPizza ->
                 setupImages(listOfPizza)
                 setupPizza(listOfPizza)
             }, ::log).let(compositeDisposable::add)
+*/
+
     }
 
     private fun setupImages (pizzas: List<Pizza>) {

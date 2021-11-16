@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
+import dagger.Lazy
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
@@ -41,9 +42,9 @@ class DetailsDialogFragment
 
     private var selectedPizzaId: Int = 0
 
-    @Inject lateinit var modelFactory: ViewModelProvider.Factory
+    @Inject lateinit var modelFactory: Lazy<ViewModelProvider.Factory>
     private val detailsViewModel: DetailsViewModel by viewModels {
-        modelFactory
+        modelFactory.get()
     }
 
     @Inject lateinit var imageBitmapLoader: ImageBitmapLoader

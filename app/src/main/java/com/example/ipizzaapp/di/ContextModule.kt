@@ -1,16 +1,17 @@
 package com.example.ipizzaapp.di
 
 import android.content.Context
+import com.example.ipizzaapp.MainApp
 import dagger.Module
 import dagger.Provides
 import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Module
-class AppContextModule(private val _appContext: Context) {
-    @Provides @Singleton @AppContext
-    fun provideAppContext() : Context
-        = _appContext
+class ContextModule {
+    @Provides @AppContext
+    fun provideAppContext (mainApp: MainApp) : Context
+        = mainApp.applicationContext
+
 }
 
 @Qualifier annotation class AppContext

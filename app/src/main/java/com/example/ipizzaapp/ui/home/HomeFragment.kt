@@ -2,6 +2,7 @@ package com.example.ipizzaapp.ui.home
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -15,9 +16,11 @@ import com.example.ipizzaapp.fragment_lib.Router
 import com.example.ipizzaapp.models.Pizza
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.details.DetailsDialogFragment
+import com.example.ipizzaapp.ui.home.home_recycler_view.HomeRecyclerViewAdapter
 import com.example.ipizzaapp.ui.preview.PreviewFragment
 import com.example.ipizzaapp.utils.custom_managers.keyboard.CustomKeyboardManagerFactory
 import com.example.ipizzaapp.utils.handlers.OnEnterKeyPressed
+import dagger.Lazy
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -27,9 +30,9 @@ class HomeFragment : DaggerFragment(R.layout.fragment_home), BackPressedStrategy
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
 
-    @Inject lateinit var modelFactory: ViewModelProvider.Factory
+    @Inject lateinit var modelFactory: Lazy<ViewModelProvider.Factory>
     private val homeViewModel : HomeViewModel by viewModels {
-        modelFactory
+        modelFactory.get()
     }
 
     @Inject lateinit var homeRecyclerViewAdapter: HomeRecyclerViewAdapter
@@ -53,21 +56,16 @@ class HomeFragment : DaggerFragment(R.layout.fragment_home), BackPressedStrategy
 
         keyboardManager
 
-        homeRecyclerViewAdapter.onImageItemClick = { pizza ->
-            Router.goTo(
-                PreviewFragment.TAG,
-                PreviewFragment.newInstance(pizzaId = pizza.id))
-            keyboardManager.hideKeyboard()
+        homeRecyclerViewAdapter.onItemBind { pizza ->
+            root.setOnClickListener {
+                showDetailsDialog(pizza = pizza)
+                keyboardManager.hideKeyboard()
+            }
         }
-
-        homeRecyclerViewAdapter.onRootElementClick = { pizza ->
-            showDetailsDialog(pizza = pizza)
-            keyboardManager.hideKeyboard()
-        }
-
 
         with(binding) {
             homeRecyclerView.adapter = homeRecyclerViewAdapter
+
 
             searchView.addTextChangedListener { text ->
                 homeViewModel.setSearchText(text.toString())
