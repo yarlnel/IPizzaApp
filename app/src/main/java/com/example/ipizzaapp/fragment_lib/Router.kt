@@ -1,17 +1,11 @@
 package com.example.ipizzaapp.fragment_lib
 
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.ipizzaapp.R
-import com.example.ipizzaapp.models.Pizza
 import com.example.ipizzaapp.ui.MainActivity
-import com.example.ipizzaapp.ui.home.HomeFragment
-import com.google.gson.Gson
 import java.lang.Exception
-import java.util.*
-import javax.inject.Inject
 
 
 object Router {

@@ -1,8 +1,10 @@
 package com.example.ipizzaapp.di
 
-import com.example.ipizzaapp.network.retrofit.IPizzaApi
+import com.example.data.network.retrofit.IPizzaApi
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -14,6 +16,21 @@ import javax.inject.Singleton
 @Module
 class RetrofitModule {
     @Provides @Singleton
+    fun provideLoggingInterceptor()
+        = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+    @Provides @Singleton
+    fun provideOkHttpClient (
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient
+    = OkHttpClient.Builder()
+        // .addInterceptor(httpLoggingInterceptor)
+        .build()
+
+
+    @Provides @Singleton
     fun provideRxCallAdapterFactory() : CallAdapter.Factory
         = RxJava2CallAdapterFactory.create()
     @Provides @Singleton
@@ -23,12 +40,14 @@ class RetrofitModule {
     @IPizzaApiRetrofit @Provides @Singleton
     fun provideIPizzaRetrofit (
         converterFactory: Converter.Factory,
-        callAdapterFactory: CallAdapter.Factory
+        callAdapterFactory: CallAdapter.Factory,
+        okHttpClient: OkHttpClient,
     ) : Retrofit
         = Retrofit.Builder()
             .baseUrl("https://springboot-kotlin-demo.herokuapp.com/")
             .addConverterFactory(converterFactory)
             .addCallAdapterFactory(callAdapterFactory)
+            .client(okHttpClient)
             .build()
 
     @Provides @Singleton

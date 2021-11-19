@@ -1,9 +1,9 @@
 package com.example.ipizzaapp.ui.home.home_recycler_view
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.models.Pizza
 import com.example.ipizzaapp.R
 import com.example.ipizzaapp.databinding.PizzaItemBinding
-import com.example.ipizzaapp.models.Pizza
 import com.squareup.picasso.Picasso
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -20,6 +20,7 @@ class ItemPizzaViewHolder
         with(itemBinding) {
             picasso
                 .load(pizza.imageUrls.first())
+                .error(R.drawable.ic_red_broken)
                 .fit()
                 .into(itemImageView)
 

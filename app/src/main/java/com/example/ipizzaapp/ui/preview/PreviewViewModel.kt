@@ -2,12 +2,16 @@ package com.example.ipizzaapp.ui.preview
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.ipizzaapp.db.dao.OrderDao
-import com.example.ipizzaapp.models.Order
-import com.example.ipizzaapp.models.Pizza
-import com.example.ipizzaapp.network.castom_providers.PizzaLoader
-import com.example.ipizzaapp.network.retrofit.IPizzaApi
+
+
+import com.example.domain.models.Order
+
+import com.example.domain.models.Pizza
+import com.example.domain.usecase.order.SaveOrder
+import com.example.domain.usecase.pizza.GetPizzaById
+
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,9 +20,10 @@ import javax.inject.Inject
 
 class PreviewViewModel
     @Inject constructor(
-        private val pizzaLoader: PizzaLoader,
-        private val orderDao: OrderDao,
+        private val saveOrder: SaveOrder,
+        private val getPizzaById: GetPizzaById,
     ) : ViewModel() {
+    private val compositeDisposable = CompositeDisposable()
     private val _currentPageNumber
         = BehaviorSubject.create<Int>().apply {
             onNext(1)
@@ -43,19 +48,18 @@ class PreviewViewModel
 
     fun addSelectedPizzaToCart () {
         _selectedPizza.value?.id?.let { pizzaId ->
-            orderDao.insertOrder(Order(quantity = 1, pizzaId = pizzaId))
+            saveOrder(Order(quantity = 1, pizzaId = pizzaId))
         }
     }
 
     fun setupPizzaById(pizzaId: Int) {
-        pizzaLoader.loadPizzaById(
-            id = pizzaId,
-            onPizzaLoaded = _selectedPizza::onNext
-        )
+        getPizzaById(id = pizzaId)
+            .subscribe(_selectedPizza::onNext, ::logException)
+            .let(compositeDisposable::add)
     }
 
     override fun onCleared() {
-        pizzaLoader.clearDisposable()
+        compositeDisposable.clear()
         super.onCleared()
     }
 }

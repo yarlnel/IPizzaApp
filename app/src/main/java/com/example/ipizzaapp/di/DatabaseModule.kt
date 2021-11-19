@@ -2,10 +2,11 @@ package com.example.ipizzaapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.ipizzaapp.db.MainDatabase
-import com.example.ipizzaapp.db.dao.ImageDao
-import com.example.ipizzaapp.db.dao.OrderDao
-import com.example.ipizzaapp.db.dao.PizzaDao
+import com.example.data.db.MainDatabase
+import com.example.data.db.dao.ImageDao
+import com.example.data.db.dao.OrderDao
+import com.example.data.db.dao.PizzaDao
+
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

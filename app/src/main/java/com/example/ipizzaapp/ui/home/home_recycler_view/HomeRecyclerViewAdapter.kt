@@ -4,12 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ipizzaapp.R
-import com.example.ipizzaapp.databinding.CartItemBinding
+import com.example.domain.models.Pizza
 
 import com.example.ipizzaapp.databinding.PizzaItemBinding
-import com.example.ipizzaapp.models.Pizza
-import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 
