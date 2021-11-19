@@ -7,6 +7,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Module(includes = [
     PicassoModule::class,
     ContextModule::class,
+    BindReposModule::class,
     RetrofitModule::class,
     PicassoModule::class,
     ViewModelModule::class,

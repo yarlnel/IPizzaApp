@@ -7,26 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.ipizzaapp.R
 
 import com.example.ipizzaapp.databinding.FragmentDetailsDialogBinding
 import com.example.ipizzaapp.fragment_lib.Router
 
-import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.cart.CartFragment
 import com.example.ipizzaapp.ui.preview.PreviewFragment
-import com.example.ipizzaapp.utils.image_utils.ImageBitmapLoader
 import com.example.ipizzaapp.utils.image_utils.setFitImage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 import dagger.Lazy
-import dagger.android.AndroidInjection
+
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -47,7 +45,9 @@ class DetailsDialogFragment
         modelFactory.get()
     }
 
-    @Inject lateinit var imageBitmapLoader: ImageBitmapLoader
+    @Inject lateinit var picasso: Picasso
+
+
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -90,7 +90,10 @@ class DetailsDialogFragment
             detailsViewModel.selectedPizza.subscribe { pizza ->
 
                 val imageUrl = pizza.imageUrls.first()
-                imageBitmapLoader.loadImageBitmap(imageUrl, detailsImageView::setFitImage)
+                picasso.load(imageUrl)
+                    .error(R.drawable.ic_red_broken)
+                    .fit()
+                    .into(detailsImageView)
 
                 titleTextView.text = pizza.name
                 descriptionTextView.text = pizza.description

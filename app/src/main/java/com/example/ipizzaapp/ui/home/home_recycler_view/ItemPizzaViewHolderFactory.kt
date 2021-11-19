@@ -1,7 +1,7 @@
 package com.example.ipizzaapp.ui.home.home_recycler_view
 
 import com.example.ipizzaapp.databinding.PizzaItemBinding
-import com.example.ipizzaapp.models.Pizza
+import com.example.domain.models.Pizza
 import dagger.assisted.AssistedFactory
 
 @AssistedFactory

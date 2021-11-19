@@ -1,6 +1,7 @@
 package com.example.ipizzaapp.ui.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import com.example.ipizzaapp.databinding.FragmentCartBinding
 import com.example.ipizzaapp.fragment_lib.Router
 import com.example.ipizzaapp.ui.cart.cart_recycler_view.CartRecyclerViewAdapter
 import com.example.ipizzaapp.ui.ordered_pizza.PlaceOrderFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
@@ -45,6 +47,8 @@ class CartFragment : DaggerFragment(R.layout.fragment_cart) {
             }
         }
 
+
+
         cartViewModel.orderList
             .subscribe(cartRecyclerViewAdapter::setItems)
             .let(compositeDisposable::add)
@@ -56,7 +60,31 @@ class CartFragment : DaggerFragment(R.layout.fragment_cart) {
                 cartViewModel.clearOrders()
             }
             btnGoToOrderedPizzaFragment.setOnClickListener {
-                Router.goTo(PlaceOrderFragment.TAG, PlaceOrderFragment.newInstance())
+                cartViewModel.placeOrder(
+                    onError = { err ->
+                        Snackbar
+                            .make(binding.root,
+                                """|Походу у вас проблемы с интернетом :(
+                                   |Не удалось отправить заказ...
+                                   |Повторите попытку позже
+                                """.trimMargin(),
+                                Snackbar.LENGTH_LONG)
+                            .show()
+                        Log.e(javaClass.simpleName, """
+                            PlaceOrder Error
+                            Stacktrace:
+                            ${err.stackTraceToString()}
+                        """.trimIndent())
+                    },
+                    onSuccess = {
+                        Router.goTo(
+                            PlaceOrderFragment.TAG,
+                            PlaceOrderFragment.newInstance())
+                        cartViewModel.clearOrders()
+                    }
+                )
+
+
             }
         }
     }
@@ -64,6 +92,7 @@ class CartFragment : DaggerFragment(R.layout.fragment_cart) {
     override fun onDestroyView() {
         super.onDestroyView()
         compositeDisposable.clear()
+        cartRecyclerViewAdapter.compositeDisposable.clear()
     }
 
     companion object {

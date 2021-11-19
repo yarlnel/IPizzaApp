@@ -2,7 +2,6 @@ package com.example.ipizzaapp.ui.home
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -12,12 +11,10 @@ import com.example.ipizzaapp.R
 import com.example.ipizzaapp.abstractions.BackPressedStrategyOwner
 
 import com.example.ipizzaapp.databinding.FragmentHomeBinding
-import com.example.ipizzaapp.fragment_lib.Router
-import com.example.ipizzaapp.models.Pizza
+import com.example.domain.models.Pizza
 import com.example.ipizzaapp.ui.MainActivity
 import com.example.ipizzaapp.ui.details.DetailsDialogFragment
 import com.example.ipizzaapp.ui.home.home_recycler_view.HomeRecyclerViewAdapter
-import com.example.ipizzaapp.ui.preview.PreviewFragment
 import com.example.ipizzaapp.utils.custom_managers.keyboard.CustomKeyboardManagerFactory
 import com.example.ipizzaapp.utils.handlers.OnEnterKeyPressed
 import dagger.Lazy

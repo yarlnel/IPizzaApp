@@ -2,9 +2,8 @@ package com.example.ipizzaapp.ui.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.ipizzaapp.db.dao.PizzaDao
-import com.example.ipizzaapp.network.retrofit.IPizzaApi
-import com.example.ipizzaapp.models.Pizza
+import com.example.domain.models.Pizza
+import com.example.domain.usecase.pizza.GetAllPizza
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,8 +13,7 @@ import javax.inject.Inject
 
 class HomeViewModel
     @Inject constructor(
-        private val pizzaApi: IPizzaApi,
-        private val pizzaDao: PizzaDao,
+        private val getAllPizza: GetAllPizza
     ) : ViewModel() {
 
     private fun log ( th: Throwable) {
@@ -62,10 +60,7 @@ class HomeViewModel
 
 
     private fun setupPizzasFromDb () {
-        pizzaDao
-            .getAllPizza()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        getAllPizza()
             .subscribe({ listOfPizza ->
                 if (baseListOfPizza.count() == 0) {
                     baseListOfPizza.clear()

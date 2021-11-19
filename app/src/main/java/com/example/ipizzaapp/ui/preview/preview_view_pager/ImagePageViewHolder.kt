@@ -1,6 +1,7 @@
 package com.example.ipizzaapp.ui.preview.preview_view_pager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ipizzaapp.R
 import com.example.ipizzaapp.databinding.ImageItemBinding
 import com.squareup.picasso.Picasso
 import dagger.assisted.Assisted
@@ -15,6 +16,7 @@ class ImagePageViewHolder
         with(itemBinding) {
             picasso
                 .load(imageUrl)
+                .error(R.drawable.ic_red_broken)
                 .into(itemImageView)
         }
     }
